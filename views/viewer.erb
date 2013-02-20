@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Border Patrol</title>
+  <script src="js/jquery-1.9.1.min.js"></script>
+  <script src="js/jquery-migrate-1.1.0.min.js"></script>
+  <link href="css/video-js.css" rel="stylesheet" type="text/css">
+  <!-- video.js must be in the <head> for older IEs to work. -->
+  <script src="js/video.js"></script>
+  <style>
+	body{
+		background-color: #000;
+		margin: 0px 50px;
+
+	}
+	h1{
+		font-family: 'Arial', sans-serif;
+		text-transform:uppercase;
+		font-size: 62px;
+		letter-spacing: 7px;
+		color: #fff;
+		text-align: center;
+		width: 100%;
+		margin: 0px 0px 0px 0px;
+		display:hidden;
+		overflow:hidden;
+		height:0px;
+		display:block;
+	}
+	div#masthead {
+		width: 700px;
+		height: 80px;
+		margin: 40px auto 0px auto;
+		background-image: url('media/border-patrol-title.svg');
+		background-color: #000;
+	}
+	
+	div#border-patrol {
+		margin: 0px auto;		
+	}
+
+</style>
+</head>
+<body>
+<div id="masthead">
+	<h1>Border Patrol</h1>
+</div>
+  <video id="border-patrol" class="video-js vjs-default-skin" preload="auto" width="100%" height="720"  data-setup="{}">
+	<% if supports_hls then %>
+		<source src="media/playlist-lq.m3u8" type="video/mp4"/>
+	<% else %>
+   		<source src="media/border-patrol-480-12h-lq.mp4" type="video/mp4" />
+   		<source src="media/border-patrol-480-12h.webm" type="video/ogg" />
+	<% end %>
+  </video>
+ <script>
+	
+	function set_viewer_size() {
+		$viewer = $('div#border-patrol');
+		$win = $(window);
+		var h = ( $win.width() * .58 ); 
+		$viewer.height( h );
+	}
+	$(window).resize(function(){
+			set_viewer_size();
+		});
+   var bpPlayer = _V_("border-patrol");
+    bpPlayer.ready( function(){
+	   set_viewer_size();
+	   this.play();
+	   
+   });
+//get current video time value from server and seek to that point in video
+   bpPlayer.addEvent("loadeddata", function(){
+	$.get( 'time', function(time){
+   		bpPlayer.currentTime(time);
+   		bpPlayer.play();
+     
+    		});
+	});
+	
+ </script>
+</body>
+</html>
