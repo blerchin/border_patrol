@@ -2,10 +2,14 @@ require 'rubygems'
 require 'sinatra'
 require 'border_patrol'
 
+last_playlist_update = Time.now.to_i
+
 configure do
 	mime_type :text, 'text/plain'
-	mime_type :m3u8, 'application/x-mpegURL or vnd.apple.mpegURL'
+	mime_type :m3u8, 'application/x-mpegURL'
 	mime_type :ts, 	 'video/MP2T'
+	get_playlist
+	last_playlist_update = Time.now.to_i
 end
 
 get '/', :agent => /(iPhone|iPod|iPad|Android)/ do
@@ -20,14 +24,14 @@ get '/time' do
 	"#{get_secs}"
 end
 
-get '/playlist-lq.m3u8' do
-	content_type :m3u8
-	get_playlist
+get '/media/playlist-lq.m3u8' do
+	if (Time.now.to_i - last_playlist_update) > 9 then 
+		get_playlist
+		last_playlist_update = Time.now.to_i
+	end
+	send_file "playlist-lq-temp.m3u8", :type => :m3u8
 end
 
-get '/media/bp480-hls-lq/:segment' do
-	send_file "media/bp480-hls-lq/#{params[:segment]}", :type => :ts
-end
 
 
 

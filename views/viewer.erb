@@ -7,10 +7,22 @@
   <link href="css/video-js.css" rel="stylesheet" type="text/css">
   <!-- video.js must be in the <head> for older IEs to work. -->
   <script src="js/video.js"></script>
+  <script>
+	$(document).ready(function(){
+		var $wi = $('#what-is')
+		$wi.hide();
+		$('#what-is-toggle a').click(function(){
+		console.log('click');
+			$wi.toggle();
+		});	
+	});
+  </script>
   <style>
 	body{
 		background-color: #000;
 		margin: 0px 50px;
+		color: #ccc;
+		font-family: georgia, serif;
 
 	}
 	h1{
@@ -27,6 +39,21 @@
 		height:0px;
 		display:block;
 	}
+	h2 {
+		text-align: center;
+		font-size: 20px;
+		font-style: italic;
+		top: 10px;
+		margin-top: 30px 0px 0px 0px;
+		z-index: 10;
+	}
+	a {
+		color: #fff;
+		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
+	}
 	div#masthead {
 		width: 700px;
 		height: 80px;
@@ -34,9 +61,17 @@
 		background-image: url('media/border-patrol-title.svg');
 		background-color: #000;
 	}
+	div#what-is {
+		margin: 10px auto;
+		width: 70%;
+		max-width: 700px;
+
+	}
 	
 	div#border-patrol {
+		top: -15px;
 		margin: 0px auto;		
+		z-index: 1;
 	}
 
 </style>
@@ -44,6 +79,18 @@
 <body>
 <div id="masthead">
 	<h1>Border Patrol</h1>
+</div>
+	<h2 id="what-is-toggle"><a href="#">[what is this?]</a></h2>
+<div id="what-is">
+	<p>
+	<i>Border Patrol</i> is the online manifestation of a video produced by digital media artist <a href="http://benlerchin.com">Ben Lerchin</a>. The 12-hour-long video documents a 'flight' in Google Earth's Flight Simulator mode along the border of the USA's 48 contiguous states, beginning and ending just south of San Diego, CA. The section of the video you are seeing now corresponds to the time of day, so if you return in three hours time, the frame you see will probably be pointing in a different cardinal direction. Likewise, if you come back in twelve hours you will see the same part of the border you see now. You are invited to stop by as often as you like.
+	</p>
+	<p>
+	This video is about the uncertain relationship I have to my country and what it represents. I admire the people, places, and history that make it what it is, but regret the many great consequences of the American project. I do not think America is a place so much as it is an idea. It is comforting to think of borders and the ownership they imply, but what if this metaphor is reaching the end of its useful life? One of the great revelations of the digital age is that it requires far more energy to protect property than to share it. This is tragic as regards intellectual property. What of property in the traditional sense? What are the responsibilites that come with owning a place?
+	</p> 
+	<p>
+	This work is an ode to the frontier spirit &ndash; a peculiar sort of idealism. It is dedicated to the hope that we can save the soul of our nation without losing its spirit.
+	</p>
 </div>
   <video id="border-patrol" class="video-js vjs-default-skin" preload="auto" width="100%" height="720"  data-setup="{}">
 	<% if supports_hls then %>
