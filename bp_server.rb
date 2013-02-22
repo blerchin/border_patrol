@@ -12,7 +12,7 @@ configure do
 	last_playlist_update = Time.now.to_i
 end
 
-get '/', :agent => /(iPhone|iPod|iPad|Android)/ do
+get '/', :agent => /(iPhone|iPod|iPad)/ do
 		erb :viewer, :locals => {:supports_hls => true};
 end
 
@@ -25,7 +25,7 @@ get '/time' do
 end
 
 get '/media/playlist-lq.m3u8' do
-	if (Time.now.to_i - last_playlist_update) > 9 then 
+	if (Time.now.to_i - last_playlist_update) > 1 then 
 		get_playlist
 		last_playlist_update = Time.now.to_i
 	end

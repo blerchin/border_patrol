@@ -15,8 +15,10 @@
 		console.log('click');
 			$wi.toggle();
 		});	
+		
 	});
   </script>
+  <script src="js/preloader.js"></script>
   <style>
 	body{
 		background-color: #000;
@@ -67,6 +69,18 @@
 		max-width: 700px;
 
 	}
+	div#preloader #loaderImage {
+		width: 128px;
+		height: 128px;
+		margin: 40px auto;
+		overflow: visible;
+	}
+	div#preloader {
+		max-width: 300px;
+		height: auto;
+		margin: 40px auto 0px auto;
+		text-align: center;
+	}
 	
 	div#border-patrol {
 		top: -15px;
@@ -91,7 +105,20 @@
 	<p>
 	This work is an ode to the frontier spirit &ndash; a peculiar sort of idealism. It is dedicated to the hope that we can save the soul of our nation without losing its spirit.
 	</p>
+	<br />
+	<p>
+	N.B.: This video works reasonably well in most modern desktop browsers, but is spotty on mobile. (Sorry Android users, talk to Google about getting that MediaSource spec released). If you don't see anything or the loading screen doesn't go away after 2-3 minutes, try loading this page in a desktop version of Chrome or Safari.
+	</p>
 </div>
+  <div id ="preloader">
+<% if !supports_hls then %>	
+	<div id="loaderImage"></div>
+	<p>loading...</p>
+	<p>[sit back, on some connections this takes a minute or two]</p>
+<% else %>
+	<p>Press the play button below to start. If you are on 3G, please be patient &ndash; the video may take a while to load. If you run into trouble at any point, reload the page and try again.</p>
+<% end %>
+  </div>
   <video id="border-patrol" class="video-js vjs-default-skin" preload="auto" width="100%" height="720"  data-setup="{}">
 	<% if supports_hls then %>
 		<source src="media/playlist-lq.m3u8" type="video/mp4"/>
@@ -114,11 +141,11 @@
    var bpPlayer = _V_("border-patrol");
     bpPlayer.ready( function(){
 	   set_viewer_size();
-	   this.play();
 	   
    });
 //get current video time value from server and seek to that point in video
    bpPlayer.addEvent("loadeddata", function(){
+	$('#preloader').hide();
 	$.get( 'time', function(time){
    		bpPlayer.currentTime(time);
    		bpPlayer.play();
