@@ -8,8 +8,8 @@
 
 START_POINT = 0
 TOTAL_SECONDS = 43200 #12 * 60 * 60
-HLS_FOLDER = "media/bp480-hls-lq/"
-HLS_FILE_PREFIX = "bp480-lq"
+HLS_FOLDER = "bp480-hls-lq/"
+HLS_FILE_PREFIX = "bp480-hls-lq"
 
 def get_end secs
 	end_secs = secs + 3600
@@ -60,16 +60,18 @@ def get_playlist
 			lines << "#EXTINF:8.000000," 
 		end
 # start a few frames behind to maintain continuity in list
-		lines << "#{HLS_FOLDER}#{HLS_FILE_PREFIX}#{ clip_num + pos -5 }.ts" 
+	num = (clip_num + pos - 2)
+		lines << "#{HLS_FOLDER}#{HLS_FILE_PREFIX}%04d.ts" % num 
 	}
 
 	playlist = ""
-
-	lines.each { |l|
-		playlist << l
-		playlist << "\n"
-	}
-	return playlist 
+# I don't know why this is necessary, but it works!!
+	f = File.new("playlist-lq-temp.m3u8", "w")
+		lines.each { |l|
+			f << l
+			f << "\n"
+		}
+	f.close
+	
 end
-puts get_playlist
 
