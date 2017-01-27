@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Border Patrol</title>
+  <style>
+	body{
+		background-color: #000;
+		margin: 0px 50px;
+		color: #ccc;
+		font-family: georgia, serif;
+
+	}
+	h1{
+		font-family: 'Arial', sans-serif;
+		text-transform:uppercase;
+		font-size: 62px;
+		letter-spacing: 7px;
+		color: #fff;
+		text-align: center;
+		width: 100%;
+		margin: 0px 0px 0px 0px;
+		display:hidden;
+		overflow:hidden;
+		height:0px;
+		display:block;
+	}
+	h2 {
+		text-align: center;
+		font-size: 20px;
+		font-style: italic;
+		top: 10px;
+		margin-top: 30px 0px 0px 0px;
+		z-index: 10;
+	}
+	a {
+		color: #fff;
+		text-decoration: none;
+	}
+	a:hover {
+		text-decoration: underline;
+	}
+	div#masthead {
+		width: 700px;
+		height: 80px;
+		margin: 40px auto 0px auto;
+		background-image: url('border-patrol-title.svg');
+		background-color: #000;
+	}
+	div#what-is {
+		margin: 10px auto;
+		width: 70%;
+		max-width: 700px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.7s ease-in-out;
+	}
+  div#what-is.open {
+    max-height: 1000px;
+  }
+	
+	div#border-patrol {
+		top: -15px;
+		margin: 0px auto;		
+		z-index: 1;
+	}
+
+</style>
+</head>
+<body>
+<div id="masthead">
+	<h1>Border Patrol</h1>
+</div>
+	<h2 id="what-is-toggle"><a href="#">[what is this?]</a></h2>
+<div id="what-is">
+	<p>
+	<i>Border Patrol</i> is the online manifestation of a video produced by digital media artist <a href="http://benlerchin.com">Ben Lerchin</a>. The 12-hour-long video documents a 'flight' in Google Earth's Flight Simulator mode along the border of the USA's 48 contiguous states, beginning and ending just south of San Diego, CA. The section of the video you are seeing now corresponds to the time of day, so if you return in three hours time, the frame you see will probably be pointing in a different cardinal direction. Likewise, if you come back in twelve hours you will see the same part of the border you see now. You are invited to stop by as often as you like.
+	</p>
+	<p>
+	This video is about the uncertain relationship I have to my country and what it represents. I admire the people, places, and history that make it what it is, but regret the many great consequences of the American project. I do not think America is a place so much as it is an idea. It is comforting to think of borders and the ownership they imply, but what if this metaphor is reaching the end of its useful life? One of the great revelations of the digital age is that it requires far more energy to protect property than to share it. This is tragic as regards intellectual property. What of property in the traditional sense? What are the responsibilites that come with owning a place?
+	</p> 
+	<p>
+	This work is an ode to the frontier spirit &ndash; a peculiar sort of idealism. It is dedicated to the hope that we can save the soul of our nation without losing its spirit.
+	</p>
+</div>
+<iframe
+  id="bpVideo"
+  width="854"
+  height="480"
+  src="https://www.youtube.com/embed/gnYNGLcxY_0?autoplay=1&showinfo=0&controls=0&enablejsapi=1"
+  frameborder="0"
+  allowfullscreen>
+</iframe>
+
+  <script>
+    var tag = document.createElement('script');
+    tag.id = 'iframe-script'
+    tag.src = 'https://www.youtube.com/iframe_api';
+    var firstScript = document.getElementsByTagName('script')[0];
+    firstScript.parentNode.insertBefore(tag, firstScript);
+
+    function enableToggle() {
+      var toggle = document.getElementById('what-is-toggle');
+      var whatis = document.getElementById('what-is');
+      toggle.addEventListener('click', function() {
+        if (whatis.className === 'open') {
+          whatis.className = '';
+        } else {
+          whatis.className = 'open';
+        }
+      });
+    }
+    enableToggle();
+
+    function sizeVideo() {
+        var videoTag = document.getElementById('bpVideo');
+        var ratio = parseInt(videoTag.getAttribute('width')) / parseInt(videoTag.getAttribute('height'));
+        videoTag.setAttribute('width', document.body.offsetWidth);
+        videoTag.setAttribute('height', document.body.offsetWidth / ratio);
+    }
+    sizeVideo();
+    window.addEventListener('resize', sizeVideo);
+    
+    function syncTime(player) {
+      var SECONDS_IN_12_HOURS = 12 * 60 * 60;
+      var time = new Date();
+      var totalSeconds = (time.getHours() * 60 * 60) + (time.getMinutes() *
+        60) + time.getSeconds();
+      var pos = totalSeconds % SECONDS_IN_12_HOURS;
+      player.seekTo(pos, true);
+      player.playVideo();
+    }
+
+    function onPlayerReady(evt) {
+      syncTime(evt.target);
+    }
+
+    function onPlayerStateChange(evt) {
+    }
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('bpVideo', {
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+  </script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-38702597-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+
+</body>
+</html>
